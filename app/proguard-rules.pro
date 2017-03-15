@@ -17,3 +17,4 @@
 #}
 
 -keep class tinkoff.androidcourse.Response { *; }
+-dontwarn com.squareup.okhttp.**
