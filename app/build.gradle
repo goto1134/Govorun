@@ -41,6 +41,9 @@ android {
         api21 {
             minSdkVersion 21
         }
+        api25 {
+            minSdkVersion 25
+        }
     }
 }
 
