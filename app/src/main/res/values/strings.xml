@@ -5,4 +5,5 @@
     <string name="password">Пароль</string>
     <string name="enter">Войти</string>
     <string name="avatar">Аватар</string>
+    <string name="about_app">About App</string>
 </resources>

@@ -1,7 +1,6 @@
 package tinkoff.androidcourse;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +15,7 @@ import java.util.List;
  * on 23.03.2017.
  */
 
-public class DialogActivity extends AppCompatActivity {
+public class DialogActivity extends MenuActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
