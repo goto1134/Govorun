@@ -1,5 +1,6 @@
 package tinkoff.androidcourse;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -31,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
         adapter = new DialogsAdapter(createDataset(), new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(MainActivity.this, "position = " + position, Toast.LENGTH_SHORT).show();
+
+                openDialog(position);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -39,14 +41,20 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
+    private void openDialog(int position) {
+        Intent intent = new Intent(this, DialogActivity.class);
+        startActivity(intent);
+        Toast.makeText(MainActivity.this, "position = " + position, Toast.LENGTH_SHORT).show();
+    }
+
     private List<DialogItem> createDataset() {
         List<DialogItem> list = new ArrayList<>();
-        list.add(new DialogItem("title", "desc"));
-        list.add(new DialogItem("title", "desc"));
-        list.add(new DialogItem("title", "desc"));
-        list.add(new DialogItem("title", "desc"));
-        list.add(new DialogItem("title", "desc"));
-        list.add(new DialogItem("title", "desc"));
+        list.add(new DialogItem("title", "date"));
+        list.add(new DialogItem("title", "date"));
+        list.add(new DialogItem("title", "date"));
+        list.add(new DialogItem("title", "date"));
+        list.add(new DialogItem("title", "date"));
+        list.add(new DialogItem("title", "date"));
         return list;
     }
 }
