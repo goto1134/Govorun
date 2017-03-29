@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,7 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-public class NavigationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class NavigationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogListFragment.DialogListListener {
 
     private final static int MENU_DIALOGS = 0;
     private ActionBarDrawerToggle toggle;
@@ -31,16 +32,16 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_dialogs:
-                StubFragment dialogsFragment = StubFragment.newInstance("Диалоги");
-                addFragment(dialogsFragment);
+                Fragment dialogsFragment = DialogListFragment.newInstance();
+                setFragment(dialogsFragment);
                 break;
             case R.id.nav_settings:
                 StubFragment settingsFragment = StubFragment.newInstance("Настройки");
-                addFragment(settingsFragment);
+                setFragment(settingsFragment);
                 break;
             case R.id.nav_about:
-                StubFragment aboutFragment = StubFragment.newInstance("О приложении");
-                addFragment(aboutFragment);
+                Fragment aboutFragment = AboutFragment.newInstance();
+                setFragment(aboutFragment);
                 break;
             case R.id.nav_exit:
                 finish();
@@ -68,8 +69,11 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
-            navigationView.getMenu().getItem(MENU_DIALOGS).setChecked(true);
-            onNavigationItemSelected(navigationView.getMenu().getItem(MENU_DIALOGS));
+            navigationView.getMenu()
+                          .getItem(MENU_DIALOGS)
+                          .setChecked(true);
+            onNavigationItemSelected(navigationView.getMenu()
+                                                   .getItem(MENU_DIALOGS));
         }
     }
 
@@ -79,9 +83,22 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         toggle.syncState();
     }
 
-    private void addFragment(StubFragment fragment) {
+    private void setFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction = fragmentTransaction.replace(R.id.content_navigation, fragment);
         fragmentTransaction.commit();
+    }
+
+    private void addFragmentOnBackStack(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                                   .replace(R.id.content_navigation, fragment)
+                                   .addToBackStack(null)
+                                   .commit();
+    }
+
+    @Override
+    public void onDialogTouched(int position) {
+        DialogFragment fragment = DialogFragment.newInstance();
+        addFragmentOnBackStack(fragment);
     }
 }

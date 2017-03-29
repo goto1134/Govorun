@@ -11,4 +11,10 @@
     <string name="menu_settings">Настройки</string>
     <string name="menu_about">О приложении</string>
     <string name="menu_exit">Выход</string>
+    <string name="app_description">Говорун - чат для повседневного общения.</string>
+    <string name="developer_email">1134togo@gmail.com</string>
+    <string name="developer_github">goto1134</string>
+    <string name="label_github">GitHub</string>
+    <string name="label_email">Почта</string>
+    <string name="label_about_me">Про меня</string>
 </resources>
