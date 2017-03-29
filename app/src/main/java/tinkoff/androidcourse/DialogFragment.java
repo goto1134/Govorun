@@ -32,7 +32,7 @@ public class DialogFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_dialog, container, false);
+        View view = inflater.inflate(R.layout.fragment_dialog, container, false);
         initRecyclerView(view);
         return view;
     }
