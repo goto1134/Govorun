@@ -6,4 +6,9 @@
     <string name="enter">Войти</string>
     <string name="avatar">Аватар</string>
     <string name="about_app">About App</string>
+
+    <string name="menu_dialogs">Диалоги</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="menu_about">О приложении</string>
+    <string name="menu_exit">Выход</string>
 </resources>
