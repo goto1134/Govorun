@@ -31,8 +31,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startNextScreen() {
-        Intent intent = new Intent(this, DialogListFragment.class);
-        intent.putExtra("LOGIN", login.getText().toString());
+        Intent intent = new Intent(this, NavigationActivity.class);
+        intent.putExtra(Constants.LOGIN_KEY, login.getText()
+                                                  .toString());
         startActivity(intent);
     }
 }
