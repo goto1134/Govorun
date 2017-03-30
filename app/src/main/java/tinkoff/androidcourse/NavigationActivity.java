@@ -12,6 +12,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import static tinkoff.androidcourse.Constants.LOGIN_KEY;
 
 public class NavigationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogListFragment.DialogListListener {
 
@@ -55,6 +58,9 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (!getIntent().hasExtra(LOGIN_KEY))
+            throw new IllegalStateException("The initial intent has not LOGIN extra");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
 
@@ -67,6 +73,10 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        TextView loginView = (TextView) navigationView.getHeaderView(0)
+                                                      .findViewById(R.id.nav_login);
+        loginView.setText(getIntent().getStringExtra(LOGIN_KEY));
 
         if (savedInstanceState == null) {
             navigationView.getMenu()
