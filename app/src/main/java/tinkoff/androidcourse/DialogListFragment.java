@@ -24,12 +24,11 @@ public class DialogListFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         if (!(getActivity() instanceof DialogListListener)) {
-            throw new IllegalStateException("Activity does not implement tinkoff.androidcourse.DialogListFragment.DialogListListener");
+            throw new IllegalStateException("Activity does not implement " + DialogListListener.class);
         }
-
     }
 
     @Nullable
