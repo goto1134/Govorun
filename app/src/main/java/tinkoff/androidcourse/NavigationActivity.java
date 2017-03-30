@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,7 +15,8 @@ import android.widget.TextView;
 
 import static tinkoff.androidcourse.Constants.LOGIN_KEY;
 
-public class NavigationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogListFragment.DialogListListener {
+public class NavigationActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, DialogListFragment.DialogListListener {
 
     private final static int MENU_DIALOGS = 0;
     private ActionBarDrawerToggle toggle;
@@ -94,13 +94,16 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     }
 
     private void setFragment(Fragment fragment) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction = fragmentTransaction.replace(R.id.content_navigation, fragment);
-        fragmentTransaction.commit();
+        getSupportFragmentManager().beginTransaction()
+                                   .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                                   .replace(R.id.content_navigation, fragment)
+                                   .commit();
     }
 
     private void addFragmentOnBackStack(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
+                                   .setCustomAnimations(R.anim.slide_from_right, R.anim.fade_out,
+                                           R.anim.fade_in, R.anim.slide_to_left)
                                    .replace(R.id.content_navigation, fragment)
                                    .addToBackStack(null)
                                    .commit();
