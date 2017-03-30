@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ public class DialogListFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
+    private DialogListListener listener;
 
     public static DialogListFragment newInstance() {
         return new DialogListFragment();
@@ -26,10 +28,11 @@ public class DialogListFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (!(getActivity() instanceof DialogListListener)) {
+        FragmentActivity activity = getActivity();
+        if (!(activity instanceof DialogListListener)) {
             throw new IllegalStateException("Activity does not implement tinkoff.androidcourse.DialogListFragment.DialogListListener");
         }
-
+        listener = ((DialogListListener) activity);
     }
 
     @Nullable
@@ -59,7 +62,7 @@ public class DialogListFragment extends Fragment {
     }
 
     private void openDialog(int position) {
-        ((DialogListListener) getActivity()).onDialogTouched(position);
+        listener.onDialogTouched(position);
     }
 
     private List<DialogItem> createDataset() {
