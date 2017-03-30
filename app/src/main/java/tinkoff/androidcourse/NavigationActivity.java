@@ -39,8 +39,8 @@ public class NavigationActivity extends AppCompatActivity
                 setFragment(dialogsFragment);
                 break;
             case R.id.nav_settings:
-                StubFragment settingsFragment = StubFragment.newInstance("Настройки");
-                setFragment(settingsFragment);
+                Fragment fragment = SettingsFragment.newInstance();
+                setFragment(fragment);
                 break;
             case R.id.nav_about:
                 Fragment aboutFragment = AboutFragment.newInstance();
