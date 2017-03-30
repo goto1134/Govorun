@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AndroidCourseDebug</string>
+    <string name="app_name">Govorun Debug</string>
 
     <string name="login">Логин</string>
     <string name="password">Пароль</string>
