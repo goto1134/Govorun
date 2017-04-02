@@ -2,6 +2,6 @@
 <resources>
     <declare-styleable name="ProgressButton">
         <attr name="text" format="string|reference" />
-        <attr name="enabled" format="boolean|reference" />
+        <attr name="enabled" format="boolean" />
     </declare-styleable>
 </resources>
