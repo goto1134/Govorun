@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ProgressButton">
-        <attr name="text" format="string|reference" />
-        <attr name="enabled" format="boolean" />
+        <attr name="text" format="string|reference"/>
+        <attr name="enabled" format="boolean"/>
     </declare-styleable>
-    <declare-styleable name="MessageSender">
-        <!--<attr name="exampleString" format="string"/>-->
-        <!--<attr name="exampleDimension" format="dimension"/>-->
-        <!--<attr name="exampleColor" format="color"/>-->
-        <!--<attr name="src" format="color|reference"/>-->
+    <declare-styleable name="Fonts">
+        <attr name="ubuntuFont" format="boolean"/>
     </declare-styleable>
 </resources>
