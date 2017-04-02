@@ -14,7 +14,7 @@
         android:scrollbars="vertical"/>
 
     <tinkoff.androidcourse.ui.widgets.MessageSender
-        android:id="@+id/btn_enter"
+        android:id="@+id/fd_message_sender"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>

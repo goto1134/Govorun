@@ -33,9 +33,10 @@ public class MessagesAdapter
 
     @Override
     public void onBindViewHolder(MessagesAdapter.ViewHolder holder, int position) {
-        holder.text.setText(dataset.get(position).getText());
-        holder.date.setText(DateFormat.getDateTimeInstance().format(dataset.get(position).getDate()));
-        holder.avatar.setImageResource(dataset.get(position).getAvatarID());
+        MessageItem messageItem = dataset.get(dataset.size() - position - 1);
+        holder.text.setText(messageItem.getText());
+        holder.date.setText(DateFormat.getDateTimeInstance().format(messageItem.getDate()));
+        holder.avatar.setImageResource(messageItem.getAvatarID());
     }
 
     @Override

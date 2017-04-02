@@ -25,7 +25,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="end|center_vertical"
         android:contentDescription="@string/send_button"
-        android:src="@drawable/about_icon_link"
+        android:src="@drawable/ic_send_blue_24dp"
         android:visibility="gone"/>
 
 </LinearLayout>

@@ -15,15 +15,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import tinkoff.androidcourse.ui.widgets.MessageSender;
+
 /**
  * Created by goto1134
  * on 23.03.2017.
  */
 
-public class DialogFragment extends Fragment {
+public class DialogFragment extends Fragment implements MessageSender.MessageSentListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
+    private MessageSender sender;
+    private List<MessageItem> dataset;
 
     public static DialogFragment newInstance() {
         return new DialogFragment();
@@ -33,8 +37,14 @@ public class DialogFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog, container, false);
-        initRecyclerView(view);
+        init(view);
         return view;
+    }
+
+    private void init(View view) {
+        initRecyclerView(view);
+        sender = (MessageSender) view.findViewById(R.id.fd_message_sender);
+        sender.setMessageSentListener(this);
     }
 
     private void initRecyclerView(View view) {
@@ -43,7 +53,8 @@ public class DialogFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new MessagesAdapter(createDataset(), new OnItemClickListener() {
+        dataset = createDataset();
+        adapter = new MessagesAdapter(dataset, new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Toast.makeText(getContext(), "position = " + position, Toast.LENGTH_SHORT)
@@ -51,7 +62,8 @@ public class DialogFragment extends Fragment {
             }
         });
         recyclerView.setAdapter(adapter);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
+        DividerItemDecoration dividerItemDecoration
+                = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
@@ -66,5 +78,11 @@ public class DialogFragment extends Fragment {
         list.add(new MessageItem("text", new Date(), R.drawable.test_avatar));
         list.add(new MessageItem("text", new Date(), R.drawable.test_avatar));
         return list;
+    }
+
+    @Override
+    public void OnMessageSent(String aMessage) {
+        dataset.add(new MessageItem(aMessage, new Date(),R.drawable.test_avatar));
+        adapter.notifyDataSetChanged();
     }
 }
