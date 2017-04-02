@@ -17,4 +17,6 @@
     <string name="label_github">GitHub</string>
     <string name="label_email">Почта</string>
     <string name="label_about_me">Про меня</string>
+    <string name="send_button">Отправить</string>
+    <string name="message_box_hint">Сообщение</string>
 </resources>
