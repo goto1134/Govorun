@@ -29,6 +29,11 @@ public class MessagesAdapter
         this.notifyDataSetChanged();
     }
 
+    public void addMessage(MessageItem messageItem) {
+        this.dataset.add(messageItem);
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public MessagesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat_message, parent, false);

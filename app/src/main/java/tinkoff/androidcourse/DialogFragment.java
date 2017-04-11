@@ -1,12 +1,9 @@
 package tinkoff.androidcourse;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.CursorLoader;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import tinkoff.androidcourse.ui.widgets.MessageSender;
@@ -29,9 +24,11 @@ import tinkoff.androidcourse.ui.widgets.MessageSender;
 
 public class DialogFragment extends Fragment
         implements MessageSender.MessageSentListener,
-        LoaderManager.LoaderCallbacks<List<MessageItem>> {
+        LoaderCallbacks {
 
     public static final int MESSAGE_LOADER_ID = 0;
+    public static final int SEND_MESSATGE_LOADER_ID = 1;
+    public static final String KEY_MESSAGE_TEXT = "MESSAGE_TEXT";
     private RecyclerView recyclerView;
     private MessagesAdapter adapter;
     private MessageSender sender;
@@ -81,22 +78,33 @@ public class DialogFragment extends Fragment
 
     @Override
     public void OnMessageSent(String aMessage) {
-        new MessageItem(aMessage, new Date(), R.drawable.test_avatar);
-        adapter.notifyDataSetChanged();
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_MESSAGE_TEXT, aMessage);
+        getLoaderManager().restartLoader(SEND_MESSATGE_LOADER_ID, bundle, this);
     }
 
     @Override
-    public Loader<List<MessageItem>> onCreateLoader(int id, Bundle args) {
-        return new MessageLoader(getContext());
+    public Loader onCreateLoader(int id, Bundle args) {
+        if (id == MESSAGE_LOADER_ID) {
+            return new MessageLoader(getContext());
+        } else {
+            if (!args.containsKey(KEY_MESSAGE_TEXT))
+                throw new IllegalStateException("Bundle does not contain messageText");
+            return new SendMessageLoader(getContext(), args.getString(KEY_MESSAGE_TEXT));
+        }
     }
 
     @Override
-    public void onLoadFinished(Loader<List<MessageItem>> loader, List<MessageItem> data) {
-        adapter.setDataset(data);
+    public void onLoadFinished(Loader loader, Object data) {
+        if (loader.getId() == MESSAGE_LOADER_ID) {
+            adapter.setDataset((List<MessageItem>) data);
+        } else {
+            adapter.addMessage(((MessageItem) data));
+        }
     }
 
     @Override
-    public void onLoaderReset(Loader<List<MessageItem>> loader) {
-        adapter.setDataset(null);
+    public void onLoaderReset(Loader loader) {
+
     }
 }
