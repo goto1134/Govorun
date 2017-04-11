@@ -25,7 +25,6 @@
             android:name=".NavigationActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <service android:name=".ui.widgets.LoginService"/>
     </application>
 
 </manifest>

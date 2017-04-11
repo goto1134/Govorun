@@ -1,11 +1,13 @@
 package tinkoff.androidcourse;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -13,12 +15,12 @@ import android.widget.EditText;
 
 import tinkoff.androidcourse.ui.widgets.ProgressButton;
 
+import static tinkoff.androidcourse.Constants.LOGIN_KEY;
+
 public class LoginActivity extends AppCompatActivity implements LoginFragment.LoginListener {
 
     public static final String PENDING_INTENT = "pi";
     public static final String EXTRA_SUCCESS = "extra_success";
-    public static final String CREDENTIALS = "credentials";
-    public static final int LOGIN_REQUEST_CODE = 1;
 
     private EditText login;
     private EditText password;
@@ -36,22 +38,15 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
         password = (EditText) findViewById(R.id.edit_text_password);
         button = (ProgressButton) findViewById(R.id.btn_enter);
 
-        if (savedInstanceState != null) {
-            FragmentManager supportFragmentManager = getSupportFragmentManager();
-            loginFragment = (LoginFragment) supportFragmentManager.findFragmentByTag(LoginFragment.TAG);
-            if (loginFragment != null) {
-
-            } else {
-                loginFragment = new LoginFragment();
-                supportFragmentManager.beginTransaction().add(loginFragment, LoginFragment.TAG).commit();
-            }
-        }
+        FragmentManager supportFragmentManager = getSupportFragmentManager();
+        loginFragment = LoginFragment.getInstance(supportFragmentManager);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showProgress();
-                new LoginTask(loginFragment).execute();
+                new LoginTask(loginFragment).execute(new String[]{login.getText().toString(),
+                        password.getText().toString()});
             }
         });
     }
@@ -107,6 +102,11 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
     }
 
     @Override
+    public void onInProgress() {
+        showProgress();
+    }
+
+    @Override
     public void onResult(Boolean success) {
         if (success) {
             startNextScreen();
@@ -117,8 +117,9 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
     }
 
     void startNextScreen() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("LOGIN", login.getText().toString());
+        Intent intent = new Intent(this, NavigationActivity.class);
+        intent.putExtra(LOGIN_KEY, login.getText()
+                                        .toString());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
@@ -128,9 +129,15 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            Dialog dialog = super.onCreateDialog(savedInstanceState);
-            dialog.setTitle("У тебя проблемы");
-            return dialog;
+            return new AlertDialog.Builder(getActivity()).setTitle("У тебя проблемы")
+                                                         .setPositiveButton("Повторить ввод",
+                                                                 new DialogInterface.OnClickListener() {
+                                                                     @Override
+                                                                     public void onClick(DialogInterface dialog, int which) {
+                                                                         dismiss();
+                                                                     }
+                                                                 })
+                                                         .create();
         }
     }
 }

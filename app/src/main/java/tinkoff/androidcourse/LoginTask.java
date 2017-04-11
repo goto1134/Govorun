@@ -12,7 +12,7 @@ class LoginTask extends AsyncTask<String[], Void, Boolean> {
 
     private WeakReference<LoginFragment> loginFragment;
 
-    public LoginTask(LoginFragment loginFragment) {
+    LoginTask(LoginFragment loginFragment) {
         this.loginFragment = new WeakReference<>(loginFragment);
     }
 
@@ -28,21 +28,16 @@ class LoginTask extends AsyncTask<String[], Void, Boolean> {
 
     @Override
     protected void onPreExecute() {
-//        loginFragment.get().showProgress();
+        loginFragment.get()
+                     .onTaskStarted();
     }
 
     @Override
     protected void onPostExecute(Boolean success) {
         LoginFragment loginFragment = this.loginFragment.get();
-        loginFragment.setSuccess(success);
         if (loginFragment != null) {
-            Log.i("LoginTask", "onPostExecute " + loginFragment.toString());
-//            loginFragment.hideProgress();
-            if (success) {
-//                loginFragment.startNextScreen();
-            } else {
-//                new LoginActivity.MyDialogFragment().show(loginFragment.getSupportFragmentManager(), null);
-            }
+            loginFragment.setSuccess(success);
+            Log.d("LoginTask", "onPostExecute " + loginFragment.toString());
         }
     }
 }
