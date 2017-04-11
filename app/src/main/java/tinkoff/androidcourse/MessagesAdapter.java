@@ -20,9 +20,13 @@ public class MessagesAdapter
     private List<MessageItem> dataset;
     private OnItemClickListener clickListener;
 
-    public MessagesAdapter(List<MessageItem> dataset, OnItemClickListener clickListener) {
-        this.dataset = dataset;
+    public MessagesAdapter(OnItemClickListener clickListener) {
         this.clickListener = clickListener;
+    }
+
+    public void setDataset(List<MessageItem> dataset) {
+        this.dataset = dataset;
+        this.notifyDataSetChanged();
     }
 
     @Override
@@ -33,15 +37,17 @@ public class MessagesAdapter
 
     @Override
     public void onBindViewHolder(MessagesAdapter.ViewHolder holder, int position) {
-        MessageItem messageItem = dataset.get(dataset.size() - position - 1);
-        holder.text.setText(messageItem.getText());
-        holder.date.setText(DateFormat.getDateTimeInstance().format(messageItem.getDate()));
-        holder.avatar.setImageResource(messageItem.getAvatarID());
+        if (dataset != null) {
+            MessageItem messageItem = dataset.get(dataset.size() - position - 1);
+            holder.text.setText(messageItem.getText());
+            holder.date.setText(DateFormat.getDateTimeInstance().format(messageItem.getDate()));
+            holder.avatar.setImageResource(messageItem.getAvatarID());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return dataset.size();
+        return dataset == null ? 0 : dataset.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

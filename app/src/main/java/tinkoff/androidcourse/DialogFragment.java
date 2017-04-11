@@ -1,8 +1,13 @@
 package tinkoff.androidcourse;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,15 +27,23 @@ import tinkoff.androidcourse.ui.widgets.MessageSender;
  * on 23.03.2017.
  */
 
-public class DialogFragment extends Fragment implements MessageSender.MessageSentListener {
+public class DialogFragment extends Fragment
+        implements MessageSender.MessageSentListener,
+        LoaderManager.LoaderCallbacks<List<MessageItem>> {
 
+    public static final int MESSAGE_LOADER_ID = 0;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private MessagesAdapter adapter;
     private MessageSender sender;
-    private List<MessageItem> dataset;
 
     public static DialogFragment newInstance() {
         return new DialogFragment();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(MESSAGE_LOADER_ID, null, this);
     }
 
     @Nullable
@@ -53,8 +66,7 @@ public class DialogFragment extends Fragment implements MessageSender.MessageSen
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(layoutManager);
-        dataset = createDataset();
-        adapter = new MessagesAdapter(dataset, new OnItemClickListener() {
+        adapter = new MessagesAdapter(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Toast.makeText(getContext(), "position = " + position, Toast.LENGTH_SHORT)
@@ -67,22 +79,24 @@ public class DialogFragment extends Fragment implements MessageSender.MessageSen
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
-    private List<MessageItem> createDataset() {
-        List<MessageItem> list = new ArrayList<>();
-        list.add(new MessageItem("text", new Date(), R.drawable.test_avatar));
-        list.add(new MessageItem("text", new Date(), R.drawable.test_avatar));
-        list.add(new MessageItem("text", new Date(), R.drawable.test_avatar));
-        list.add(new MessageItem("text", new Date(), R.drawable.test_avatar));
-        list.add(new MessageItem("text", new Date(), R.drawable.test_avatar));
-        list.add(new MessageItem("text", new Date(), R.drawable.test_avatar));
-        list.add(new MessageItem("text", new Date(), R.drawable.test_avatar));
-        list.add(new MessageItem("text", new Date(), R.drawable.test_avatar));
-        return list;
+    @Override
+    public void OnMessageSent(String aMessage) {
+        new MessageItem(aMessage, new Date(), R.drawable.test_avatar);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void OnMessageSent(String aMessage) {
-        dataset.add(new MessageItem(aMessage, new Date(),R.drawable.test_avatar));
-        adapter.notifyDataSetChanged();
+    public Loader<List<MessageItem>> onCreateLoader(int id, Bundle args) {
+        return new MessageLoader(getContext());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<MessageItem>> loader, List<MessageItem> data) {
+        adapter.setDataset(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<MessageItem>> loader) {
+        adapter.setDataset(null);
     }
 }
