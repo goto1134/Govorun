@@ -60,5 +60,6 @@ dependencies {
     compile 'com.github.medyo:android-about-page:1.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.code.gson:gson:2.7'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     testCompile 'junit:junit:4.12'
 }
