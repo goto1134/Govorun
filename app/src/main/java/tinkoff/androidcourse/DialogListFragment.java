@@ -1,7 +1,6 @@
 package tinkoff.androidcourse;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ public class DialogListFragment extends Fragment {
     private RecyclerView recyclerView;
     private DialogsAdapter adapter;
     private Button addDialog;
-    private SQLiteDatabase writableDatabase;
     private DialogListListener listener;
 
     public static DialogListFragment newInstance() {
@@ -40,14 +37,6 @@ public class DialogListFragment extends Fragment {
         return SQLite.select()
                      .from(DialogItem.class)
                      .queryList();
-    }
-
-    private void addDialogItem() {
-        int itemCount = adapter.getItemCount();
-        DialogItem dialogItem = new DialogItem("Title is " + itemCount, "Description is " + itemCount);
-        FlowManager.getModelAdapter(DialogItem.class)
-                   .save(dialogItem);
-        adapter.addDialog(dialogItem);
     }
 
     @Override
@@ -73,7 +62,7 @@ public class DialogListFragment extends Fragment {
         addDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addDialogItem();
+                listener.onDialogCreateCalled();
             }
         });
         return view;
@@ -100,7 +89,13 @@ public class DialogListFragment extends Fragment {
         listener.onDialogTouched(position);
     }
 
+    public void addDialog(DialogItem dialogItem) {
+        adapter.addDialog(dialogItem);
+    }
+
     public interface DialogListListener {
         void onDialogTouched(int position);
+
+        void onDialogCreateCalled();
     }
 }
