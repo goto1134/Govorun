@@ -23,8 +23,7 @@ class LoginTask extends AsyncTask<String[], Void, Boolean> {
 
     @Override
     protected void onPreExecute() {
-        loginFragment.get()
-                     .onTaskStarted();
+        loginFragment.onTaskStarted();
     }
 
     @Override

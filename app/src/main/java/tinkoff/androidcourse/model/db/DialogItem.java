@@ -4,6 +4,8 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 
+import java.util.Date;
+
 @Table(database = FintechChatDatabase.class)
 public class DialogItem {
 
@@ -16,12 +18,16 @@ public class DialogItem {
     @Column
     String desc;
 
+    @Column
+    Date creationDate;
+
     public DialogItem() {
     }
 
     public DialogItem(String title, String desc) {
         this.title = title;
         this.desc = desc;
+        creationDate = new Date();
     }
 
     public String getTitle() {
