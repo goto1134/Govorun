@@ -14,7 +14,6 @@ import tinkoff.androidcourse.R;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private ImageView imageView;
     private AnimatedVectorDrawableCompat drawable;
 
     @Override
@@ -22,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        imageView = (ImageView) findViewById(R.id.imageView);
+        ImageView imageView = (ImageView) findViewById(R.id.imageView);
         //Почему-то работает только так. Если просто указатьв srcCompat у ImageView, имеет другой тип.
         drawable = AnimatedVectorDrawableCompat.create(this, R.drawable.gororun_animation);
         imageView.setImageDrawable(drawable);
