@@ -3,7 +3,10 @@ package tinkoff.androidcourse;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-import java.util.Date;
+import com.raizlabs.android.dbflow.config.FlowManager;
+
+import tinkoff.androidcourse.model.db.DialogItem;
+import tinkoff.androidcourse.model.db.MessageItem;
 
 /**
  * Created by goto1134
@@ -11,10 +14,14 @@ import java.util.Date;
  */
 public class SendMessageLoader extends AsyncTaskLoader<MessageItem> {
     private final String messageText;
+    private DialogItem dialogItem;
+    private long userId;
 
-    public SendMessageLoader(Context context, String messageText) {
+    public SendMessageLoader(Context context, String messageText, DialogItem dialogItem, long userId) {
         super(context);
         this.messageText = messageText;
+        this.dialogItem = dialogItem;
+        this.userId = userId;
     }
 
     @Override
@@ -24,11 +31,9 @@ public class SendMessageLoader extends AsyncTaskLoader<MessageItem> {
 
     @Override
     public MessageItem loadInBackground() {
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return new MessageItem(messageText, new Date(), R.drawable.test_avatar);
+        MessageItem messageItem = new MessageItem(messageText, userId, dialogItem);
+        FlowManager.getModelAdapter(MessageItem.class)
+                   .save(messageItem);
+        return messageItem;
     }
 }

@@ -27,6 +27,7 @@ public class DialogListFragment extends Fragment {
     private DialogsAdapter adapter;
     private Button addDialog;
     private DialogListListener listener;
+    private List<DialogItem> dialogItems;
 
     public static DialogListFragment newInstance() {
         return new DialogListFragment();
@@ -55,7 +56,7 @@ public class DialogListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dialog_list, container, false);
         initRecyclerView(view);
 
-        List<DialogItem> dialogItems = getPreviousDialogItems();
+        dialogItems = getPreviousDialogItems();
         adapter.setItems(dialogItems);
 
         addDialog = (Button) view.findViewById(R.id.add_dialog);
@@ -77,7 +78,7 @@ public class DialogListFragment extends Fragment {
         adapter = new DialogsAdapter(new ArrayList<DialogItem>(), new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                openDialog(position);
+                openDialog(dialogItems.get(position));
             }
         });
         recyclerView.setAdapter(adapter);
@@ -85,8 +86,8 @@ public class DialogListFragment extends Fragment {
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
-    private void openDialog(int position) {
-        listener.onDialogTouched(position);
+    private void openDialog(DialogItem dialogItem) {
+        listener.onDialogTouched(dialogItem);
     }
 
     public void addDialog(DialogItem dialogItem) {
@@ -94,7 +95,7 @@ public class DialogListFragment extends Fragment {
     }
 
     public interface DialogListListener {
-        void onDialogTouched(int position);
+        void onDialogTouched(DialogItem dialogItem);
 
         void onDialogCreateCalled();
     }

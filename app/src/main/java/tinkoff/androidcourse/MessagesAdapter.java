@@ -10,6 +10,8 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.util.List;
 
+import tinkoff.androidcourse.model.db.MessageItem;
+
 /**
  * Created by goto1134
  * on 23.03.2017.
@@ -36,7 +38,8 @@ public class MessagesAdapter
 
     @Override
     public MessagesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat_message, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                                  .inflate(R.layout.item_chat_message, parent, false);
         return new MessagesAdapter.ViewHolder(view, clickListener);
     }
 
@@ -45,8 +48,9 @@ public class MessagesAdapter
         if (dataset != null) {
             MessageItem messageItem = dataset.get(dataset.size() - position - 1);
             holder.text.setText(messageItem.getText());
-            holder.date.setText(DateFormat.getDateTimeInstance().format(messageItem.getDate()));
-            holder.avatar.setImageResource(messageItem.getAvatarID());
+            holder.date.setText(DateFormat.getDateTimeInstance()
+                                          .format(messageItem.getDate()));
+            holder.avatar.setImageResource(R.drawable.test_avatar);
         }
     }
 

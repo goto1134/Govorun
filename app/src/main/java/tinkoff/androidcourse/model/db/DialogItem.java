@@ -3,11 +3,14 @@ package tinkoff.androidcourse.model.db;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Table(database = FintechChatDatabase.class)
-public class DialogItem {
+public class DialogItem implements Serializable {
 
     @PrimaryKey(autoincrement = true)
     long id;
@@ -20,6 +23,14 @@ public class DialogItem {
 
     @Column
     Date creationDate;
+
+    public List<MessageItem> getMessages() {
+        return SQLite.select()
+                     .from(MessageItem.class)
+                     .where(MessageItem_Table.dialogItem_id.eq(id))
+                     .orderBy(MessageItem_Table.date, false)
+                     .queryList();
+    }
 
     public DialogItem() {
     }

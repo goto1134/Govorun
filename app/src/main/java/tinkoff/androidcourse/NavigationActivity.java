@@ -122,8 +122,8 @@ public class NavigationActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDialogTouched(int position) {
-        DialogFragment fragment = DialogFragment.newInstance();
+    public void onDialogTouched(DialogItem dialogItem) {
+        DialogFragment fragment = DialogFragment.newInstance(dialogItem);
         addFragmentOnBackStack(fragment);
     }
 

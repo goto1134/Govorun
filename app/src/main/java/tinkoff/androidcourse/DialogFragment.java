@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import tinkoff.androidcourse.model.db.DialogItem;
+import tinkoff.androidcourse.model.db.MessageItem;
 import tinkoff.androidcourse.ui.widgets.MessageSender;
 
 /**
@@ -29,18 +31,24 @@ public class DialogFragment extends Fragment
     public static final int MESSAGE_LOADER_ID = 0;
     public static final int SEND_MESSATGE_LOADER_ID = 1;
     public static final String KEY_MESSAGE_TEXT = "MESSAGE_TEXT";
+    public static final String DIALOG_ITEM = "DIALOG_ITEM";
     private RecyclerView recyclerView;
     private MessagesAdapter adapter;
     private MessageSender sender;
+    public static final long STUB_USER_ID = 0;
 
-    public static DialogFragment newInstance() {
-        return new DialogFragment();
+    public static DialogFragment newInstance(DialogItem dialogItem) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(DIALOG_ITEM, dialogItem);
+        DialogFragment dialogFragment = new DialogFragment();
+        dialogFragment.setArguments(bundle);
+        return dialogFragment;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(MESSAGE_LOADER_ID, null, this);
+        getLoaderManager().initLoader(MESSAGE_LOADER_ID, getArguments(), this);
     }
 
     @Nullable
@@ -63,6 +71,7 @@ public class DialogFragment extends Fragment
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(layoutManager);
+
         adapter = new MessagesAdapter(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -85,12 +94,13 @@ public class DialogFragment extends Fragment
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
+        DialogItem dialogItem = (DialogItem) getArguments().getSerializable(DIALOG_ITEM);
         if (id == MESSAGE_LOADER_ID) {
-            return new MessageLoader(getContext());
+            return new MessageLoader(getContext(), dialogItem);
         } else {
             if (!args.containsKey(KEY_MESSAGE_TEXT))
                 throw new IllegalStateException("Bundle does not contain messageText");
-            return new SendMessageLoader(getContext(), args.getString(KEY_MESSAGE_TEXT));
+            return new SendMessageLoader(getContext(), args.getString(KEY_MESSAGE_TEXT),dialogItem,STUB_USER_ID);
         }
     }
 
