@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import tinkoff.androidcourse.model.PrefManager;
 import tinkoff.androidcourse.ui.widgets.ProgressButton;
 
 import static tinkoff.androidcourse.Constants.LOGIN_KEY;
@@ -37,7 +38,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
         login = (EditText) findViewById(R.id.edit_text_login);
         password = (EditText) findViewById(R.id.edit_text_password);
         button = (ProgressButton) findViewById(R.id.btn_enter);
-
+        login.setText(PrefManager.getInstance().login());
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         loginFragment = LoginFragment.getInstance(supportFragmentManager);
 
@@ -49,48 +50,6 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
                         password.getText().toString()});
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.i("LoginActivity", "onStart " + toString());
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.i("LoginActivity", "onStop " + toString());
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i("LoginActivity", "onDestroy " + toString());
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.i("LoginActivity", "onSaveInstanceState" + toString());
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.i("LoginActivity", "onPause" + toString());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.i("LoginActivity", "onResume" + toString());
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        Log.i("LoginActivity", "onRestoreInstanceState" + toString());
     }
 
     public void showProgress() {

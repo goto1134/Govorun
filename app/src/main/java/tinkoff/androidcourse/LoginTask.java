@@ -1,29 +1,24 @@
 package tinkoff.androidcourse;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import java.lang.ref.WeakReference;
+import tinkoff.androidcourse.model.PrefManager;
 
 /**
  * @author Sergey Boishtyan
  */
 class LoginTask extends AsyncTask<String[], Void, Boolean> {
 
-    private WeakReference<LoginFragment> loginFragment;
+    private LoginFragment loginFragment;
 
-    LoginTask(LoginFragment loginFragment) {
-        this.loginFragment = new WeakReference<>(loginFragment);
+    public LoginTask(LoginFragment loginFragment) {
+        this.loginFragment = loginFragment;
     }
 
     @Override
     protected Boolean doInBackground(String[]... credentials) {
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return false;
+        PrefManager.getInstance().saveLogin(credentials[0][0]);
+        return true;
     }
 
     @Override
@@ -34,10 +29,7 @@ class LoginTask extends AsyncTask<String[], Void, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean success) {
-        LoginFragment loginFragment = this.loginFragment.get();
-        if (loginFragment != null) {
-            loginFragment.setSuccess(success);
-            Log.d("LoginTask", "onPostExecute " + loginFragment.toString());
-        }
+        loginFragment.setSuccess(success);
     }
 }
+
