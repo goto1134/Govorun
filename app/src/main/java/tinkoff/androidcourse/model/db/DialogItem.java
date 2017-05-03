@@ -24,6 +24,9 @@ public class DialogItem implements Serializable {
     @Column
     Date creationDate;
 
+    @Column
+    String lastMessage;
+
     public List<MessageItem> getMessages() {
         return SQLite.select()
                      .from(MessageItem.class)
@@ -47,5 +50,9 @@ public class DialogItem implements Serializable {
 
     public String getDesc() {
         return desc;
+    }
+
+    public String getLastMessage() {
+        return lastMessage;
     }
 }

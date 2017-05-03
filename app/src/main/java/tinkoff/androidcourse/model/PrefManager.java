@@ -36,6 +36,6 @@ public final class PrefManager {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putString(PREF_LOGIN, login);
-        edit.commit();
+        edit.apply();
     }
 }
