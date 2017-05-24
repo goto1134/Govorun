@@ -8,8 +8,8 @@ import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
-import tinkoff.androidcourse.LoginActivity;
 import tinkoff.androidcourse.R;
+import tinkoff.androidcourse.login.LoginActivity;
 
 
 public class SplashActivity extends AppCompatActivity {

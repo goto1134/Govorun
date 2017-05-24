@@ -22,13 +22,9 @@ class LoginTask extends AsyncTask<String[], Void, Boolean> {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        PrefManager.getInstance().saveLogin(credentials[0][0]);
+        PrefManager.getInstance()
+                   .saveLogin(credentials[0][0]);
         return true;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        loginFragment.onTaskStarted();
     }
 
     @Override
