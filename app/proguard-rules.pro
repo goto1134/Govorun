@@ -17,4 +17,5 @@
 #}
 
 -keep class tinkoff.androidcourse.Response { *; }
+-keep class * extends com.raizlabs.android.dbflow.config.DatabaseHolder { *; }
 -dontwarn com.squareup.okhttp.**
