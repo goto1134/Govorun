@@ -13,12 +13,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.hannesdorfmann.mosby3.mvp.MvpActivity;
+
+import tinkoff.androidcourse.MainActivity;
+import tinkoff.androidcourse.R;
 import tinkoff.androidcourse.model.PrefManager;
 import tinkoff.androidcourse.ui.widgets.ProgressButton;
 
 import static tinkoff.androidcourse.Constants.LOGIN_KEY;
 
-public class LoginActivity extends AppCompatActivity implements LoginFragment.LoginListener {
+public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implements LoginFragment.LoginListener {
 
     public static final String PENDING_INTENT = "pi";
     public static final String EXTRA_SUCCESS = "extra_success";
@@ -30,11 +34,23 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
     private LoginFragment loginFragment;
 
     @Override
+    public void goToNavigationScreen() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("LOGIN", login.getText().toString());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    @Override
+    public void showUnSuccessAuthorization() {
+        hideProgress();
+        new LoginActivity.MyDialogFragment().show(getSupportFragmentManager(), null);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i("LoginActivity", "onCreate " + toString());
         setContentView(R.layout.activity_login);
-
         login = (EditText) findViewById(R.id.edit_text_login);
         password = (EditText) findViewById(R.id.edit_text_password);
         button = (ProgressButton) findViewById(R.id.btn_enter);
@@ -50,6 +66,12 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
                         password.getText().toString()});
             }
         });
+    }
+
+    @NonNull
+    @Override
+    public LoginPresenter createPresenter() {
+        return new LoginPresenter();
     }
 
     public void showProgress() {
