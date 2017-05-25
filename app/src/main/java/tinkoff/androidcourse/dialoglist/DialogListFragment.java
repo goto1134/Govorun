@@ -1,10 +1,9 @@
-package tinkoff.androidcourse;
+package tinkoff.androidcourse.dialoglist;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,17 +12,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
-import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import tinkoff.androidcourse.OnItemClickListener;
+import tinkoff.androidcourse.R;
 import tinkoff.androidcourse.model.db.DialogItem;
 
-public class DialogListFragment extends Fragment {
+public class DialogListFragment extends MvpFragment<DialogListView, DialogListPresenter>
+        implements DialogListView {
 
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
     private DialogsAdapter adapter;
     private Button addDialog;
     private DialogListListener listener;
@@ -33,11 +37,11 @@ public class DialogListFragment extends Fragment {
         return new DialogListFragment();
     }
 
-    @NonNull
-    private List<DialogItem> getPreviousDialogItems() {
-        return SQLite.select()
-                     .from(DialogItem.class)
-                     .queryList();
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
@@ -45,7 +49,8 @@ public class DialogListFragment extends Fragment {
         super.onAttach(context);
         FragmentActivity activity = getActivity();
         if (!(activity instanceof DialogListListener)) {
-            throw new IllegalStateException("Activity does not implement tinkoff.androidcourse.DialogListFragment.DialogListListener");
+            throw new IllegalStateException(
+                    "Activity does not implement tinkoff.androidcourse.dialoglist.DialogListFragment.DialogListListener");
         }
         listener = ((DialogListListener) activity);
     }
@@ -55,10 +60,6 @@ public class DialogListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog_list, container, false);
         initRecyclerView(view);
-
-        dialogItems = getPreviousDialogItems();
-        adapter.setItems(dialogItems);
-
         addDialog = (Button) view.findViewById(R.id.add_dialog);
         addDialog.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,17 +73,21 @@ public class DialogListFragment extends Fragment {
     private void initRecyclerView(View view) {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_dialogs);
         recyclerView.setHasFixedSize(true);
+        progressBar = (ProgressBar) view.findViewById(R.id.progress_bar_dialogs);
         Context context = getContext();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new DialogsAdapter(new ArrayList<DialogItem>(), new OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                openDialog(dialogItems.get(position));
-            }
-        });
+        if (adapter == null) {
+            adapter = new DialogsAdapter(new ArrayList<DialogItem>(), new OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    openDialog(dialogItems.get(position));
+                }
+            });
+        }
         recyclerView.setAdapter(adapter);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, layoutManager.getOrientation());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context,
+                layoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
@@ -92,6 +97,26 @@ public class DialogListFragment extends Fragment {
 
     public void addDialog(DialogItem dialogItem) {
         adapter.addDialog(dialogItem);
+    }
+
+    @NonNull
+    @Override
+    public DialogListPresenter createPresenter() {
+        return new DialogListPresenter();
+    }
+
+    @Override
+    public void showLoadInProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showDialogList(List<DialogItem> dialogItemList) {
+        dialogItems = dialogItemList;
+        adapter.setItems(dialogItemList);
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     public interface DialogListListener {

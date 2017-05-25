@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="tinkoff.androidcourse.DialogListFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="tinkoff.androidcourse.dialoglist.DialogListFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_dialogs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/add_dialog"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar_dialogs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/add_dialog"
-        android:layout_alignParentBottom="true"
-        android:text="Добавить"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Добавить"/>
 </RelativeLayout>
