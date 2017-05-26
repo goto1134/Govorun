@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import tinkoff.androidcourse.dialog.DialogFragment;
 import tinkoff.androidcourse.dialoglist.DialogListFragment;
 import tinkoff.androidcourse.model.db.DialogItem;
 

@@ -1,8 +1,8 @@
-package tinkoff.androidcourse;
+package tinkoff.androidcourse.dialog;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.DividerItemDecoration;
@@ -11,10 +11,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
 import java.util.List;
 
+import tinkoff.androidcourse.OnItemClickListener;
+import tinkoff.androidcourse.R;
 import tinkoff.androidcourse.model.db.DialogItem;
 import tinkoff.androidcourse.model.db.MessageItem;
 import tinkoff.androidcourse.ui.widgets.MessageSender;
@@ -24,18 +29,24 @@ import tinkoff.androidcourse.ui.widgets.MessageSender;
  * on 23.03.2017.
  */
 
-public class DialogFragment extends Fragment
+public class DialogFragment extends MvpFragment<DialogView, DialogPresenter>
         implements MessageSender.MessageSentListener,
-        LoaderCallbacks {
+        LoaderCallbacks, DialogView {
 
-    public static final int MESSAGE_LOADER_ID = 0;
     public static final int SEND_MESSATGE_LOADER_ID = 1;
     public static final String KEY_MESSAGE_TEXT = "MESSAGE_TEXT";
     public static final String DIALOG_ITEM = "DIALOG_ITEM";
-    private RecyclerView recyclerView;
-    private MessagesAdapter adapter;
-    private MessageSender sender;
     public static final long STUB_USER_ID = 0;
+    private RecyclerView recyclerView;
+    private ProgressBar progressBar;
+    private MessagesAdapter adapter = new MessagesAdapter(new OnItemClickListener() {
+        @Override
+        public void onItemClick(int position) {
+            Toast.makeText(getContext(), "position = " + position, Toast.LENGTH_SHORT)
+                 .show();
+        }
+    });
+    private MessageSender sender;
 
     public static DialogFragment newInstance(DialogItem dialogItem) {
         Bundle bundle = new Bundle();
@@ -46,9 +57,16 @@ public class DialogFragment extends Fragment
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(MESSAGE_LOADER_ID, getArguments(), this);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @NonNull
+    @Override
+    public DialogPresenter createPresenter() {
+        DialogItem dialogItem = (DialogItem) getArguments().getSerializable(DIALOG_ITEM);
+        return new DialogPresenter(dialogItem);
     }
 
     @Nullable
@@ -61,6 +79,7 @@ public class DialogFragment extends Fragment
 
     private void init(View view) {
         initRecyclerView(view);
+        progressBar = (ProgressBar) view.findViewById(R.id.progress_bar_messages);
         sender = (MessageSender) view.findViewById(R.id.fd_message_sender);
         sender.setMessageSentListener(this);
     }
@@ -71,14 +90,6 @@ public class DialogFragment extends Fragment
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(layoutManager);
-
-        adapter = new MessagesAdapter(new OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Toast.makeText(getContext(), "position = " + position, Toast.LENGTH_SHORT)
-                     .show();
-            }
-        });
         recyclerView.setAdapter(adapter);
         DividerItemDecoration dividerItemDecoration
                 = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
@@ -95,26 +106,34 @@ public class DialogFragment extends Fragment
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
         DialogItem dialogItem = (DialogItem) getArguments().getSerializable(DIALOG_ITEM);
-        if (id == MESSAGE_LOADER_ID) {
-            return new MessageLoader(getContext(), dialogItem);
-        } else {
-            if (!args.containsKey(KEY_MESSAGE_TEXT))
-                throw new IllegalStateException("Bundle does not contain messageText");
-            return new SendMessageLoader(getContext(), args.getString(KEY_MESSAGE_TEXT),dialogItem,STUB_USER_ID);
+        if (!args.containsKey(KEY_MESSAGE_TEXT)) {
+            throw new IllegalStateException("Bundle does not contain messageText");
         }
+        return new SendMessageLoader(getContext(), args.getString(KEY_MESSAGE_TEXT), dialogItem,
+                STUB_USER_ID);
     }
+
 
     @Override
     public void onLoadFinished(Loader loader, Object data) {
-        if (loader.getId() == MESSAGE_LOADER_ID) {
-            adapter.setDataset((List<MessageItem>) data);
-        } else {
-            adapter.addMessage(((MessageItem) data));
-        }
+        adapter.addMessage(((MessageItem) data));
     }
 
     @Override
     public void onLoaderReset(Loader loader) {
 
+    }
+
+    @Override
+    public void setMessageItems(List<MessageItem> messageItems) {
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        adapter.setDataset(messageItems);
+    }
+
+    @Override
+    public void showLoadInProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
     }
 }

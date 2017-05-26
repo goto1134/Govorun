@@ -1,4 +1,4 @@
-package tinkoff.androidcourse;
+package tinkoff.androidcourse.dialog;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.util.List;
 
+import tinkoff.androidcourse.OnItemClickListener;
+import tinkoff.androidcourse.R;
 import tinkoff.androidcourse.model.db.MessageItem;
 
 /**
@@ -17,21 +19,21 @@ import tinkoff.androidcourse.model.db.MessageItem;
  * on 23.03.2017.
  */
 
-public class MessagesAdapter
+class MessagesAdapter
         extends RecyclerView.Adapter<MessagesAdapter.ViewHolder> {
     private List<MessageItem> dataset;
     private OnItemClickListener clickListener;
 
-    public MessagesAdapter(OnItemClickListener clickListener) {
+    MessagesAdapter(OnItemClickListener clickListener) {
         this.clickListener = clickListener;
     }
 
-    public void setDataset(List<MessageItem> dataset) {
+    void setDataset(List<MessageItem> dataset) {
         this.dataset = dataset;
         this.notifyDataSetChanged();
     }
 
-    public void addMessage(MessageItem messageItem) {
+    void addMessage(MessageItem messageItem) {
         this.dataset.add(messageItem);
         this.notifyDataSetChanged();
     }
@@ -65,7 +67,7 @@ public class MessagesAdapter
         public TextView date;
         public ImageView avatar;
 
-        public ViewHolder(View view, OnItemClickListener listener) {
+        ViewHolder(View view, OnItemClickListener listener) {
             super(view);
             text = (TextView) view.findViewById(R.id.tv_message_text);
             date = (TextView) view.findViewById(R.id.tv_message_date);

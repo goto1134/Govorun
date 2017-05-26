@@ -1,4 +1,4 @@
-package tinkoff.androidcourse;
+package tinkoff.androidcourse.dialog;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
@@ -12,12 +12,12 @@ import tinkoff.androidcourse.model.db.MessageItem;
  * Created by goto1134
  * on 29.04.2017.
  */
-public class SendMessageLoader extends AsyncTaskLoader<MessageItem> {
+class SendMessageLoader extends AsyncTaskLoader<MessageItem> {
     private final String messageText;
     private DialogItem dialogItem;
     private long userId;
 
-    public SendMessageLoader(Context context, String messageText, DialogItem dialogItem, long userId) {
+    SendMessageLoader(Context context, String messageText, DialogItem dialogItem, long userId) {
         super(context);
         this.messageText = messageText;
         this.dialogItem = dialogItem;
