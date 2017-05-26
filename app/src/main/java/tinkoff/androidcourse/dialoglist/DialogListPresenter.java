@@ -32,7 +32,7 @@ class DialogListPresenter extends MvpBasePresenter<DialogListView> {
 
     void refresh() {
         getView().showLoadInProgress();
-        new DialogListLoadTask(this).execute();
+        new LoadDialogListTask(this).execute();
     }
 
     void onDialogItemsLoaded(List<DialogItem> dialogItems) {

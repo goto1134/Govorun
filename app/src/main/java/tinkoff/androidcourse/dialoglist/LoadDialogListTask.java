@@ -13,21 +13,16 @@ import tinkoff.androidcourse.model.db.DialogItem;
  * on 25.05.2017.
  */
 
-class DialogListLoadTask extends AsyncTask<Void, Void, List<DialogItem>> {
+class LoadDialogListTask extends AsyncTask<Void, Void, List<DialogItem>> {
 
     private final DialogListPresenter dialogListPresenter;
 
-    DialogListLoadTask(DialogListPresenter dialogListPresenter) {
+    LoadDialogListTask(DialogListPresenter dialogListPresenter) {
         this.dialogListPresenter = dialogListPresenter;
     }
 
     @Override
     protected List<DialogItem> doInBackground(Void... params) {
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return SQLite.select()
                      .from(DialogItem.class)
                      .queryList();
