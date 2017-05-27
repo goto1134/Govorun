@@ -25,6 +25,7 @@ import static tinkoff.androidcourse.Constants.LOGIN_KEY;
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DialogListFragment.DialogListListener {
 
+    public static final String DIALOG_FRAGMENT_NAME = "dialog";
     private final static int MENU_DIALOGS = 0;
     private ActionBarDrawerToggle toggle;
 
@@ -114,18 +115,18 @@ public class NavigationActivity extends AppCompatActivity
                               .commit();
     }
 
-    private void addFragmentOnBackStack(Fragment fragment) {
+    private void addFragmentOnBackStack(Fragment fragment, String name) {
         getSupportFragmentManager().beginTransaction()
                                    .setCustomAnimations(R.anim.slide_from_right, R.anim.fade_out,
                                            R.anim.fade_in, R.anim.slide_to_left)
                                    .replace(R.id.content_navigation, fragment)
-                                   .addToBackStack(null)
+                                   .addToBackStack(name)
                                    .commit();
     }
 
     @Override
     public void onDialogTouched(DialogItem dialogItem) {
         DialogFragment fragment = DialogFragment.newInstance(dialogItem);
-        addFragmentOnBackStack(fragment);
+        addFragmentOnBackStack(fragment, DIALOG_FRAGMENT_NAME);
     }
 }
