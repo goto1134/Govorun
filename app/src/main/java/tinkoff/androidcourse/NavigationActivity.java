@@ -1,5 +1,6 @@
 package tinkoff.androidcourse;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import tinkoff.androidcourse.dialog.DialogFragment;
 import tinkoff.androidcourse.dialoglist.DialogListFragment;
+import tinkoff.androidcourse.login.LoginActivity;
 import tinkoff.androidcourse.model.db.DialogItem;
 
 import static tinkoff.androidcourse.Constants.LOGIN_KEY;
@@ -52,7 +54,9 @@ public class NavigationActivity extends AppCompatActivity
                 setFragment(aboutFragment);
                 break;
             case R.id.nav_exit:
-                finish();
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 break;
         }
 
