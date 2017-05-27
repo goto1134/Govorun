@@ -62,6 +62,5 @@ class DialogPresenter extends MvpBasePresenter<DialogView> {
         } else {
             this.sentMessage = messageItem;
         }
-
     }
 }

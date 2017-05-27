@@ -104,6 +104,7 @@ public class DialogFragment extends MvpFragment<DialogView, DialogPresenter>
     public void setMessageItems(List<MessageItem> messageItems) {
         progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
+        sender.setVisibility(View.VISIBLE);
         adapter.setDataset(messageItems);
     }
 
@@ -111,5 +112,6 @@ public class DialogFragment extends MvpFragment<DialogView, DialogPresenter>
     public void showLoadInProgress() {
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
+        sender.setVisibility(View.GONE);
     }
 }
