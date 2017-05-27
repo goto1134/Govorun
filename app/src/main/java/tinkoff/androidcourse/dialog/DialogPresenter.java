@@ -17,6 +17,7 @@ class DialogPresenter extends MvpBasePresenter<DialogView> {
     private final DialogItem dialogItem;
     private List<MessageItem> messageItems;
     private boolean isFirstTimeAttach = true;
+    private MessageItem sentMessage;
 
     DialogPresenter(DialogItem dialogItem) {
         this.dialogItem = dialogItem;
@@ -31,6 +32,8 @@ class DialogPresenter extends MvpBasePresenter<DialogView> {
         } else if (isFirstTimeAttach) {
             isFirstTimeAttach = false;
             refresh();
+        } else if (sentMessage != null) {
+            getView().addMessage(sentMessage);
         }
     }
 
@@ -54,6 +57,11 @@ class DialogPresenter extends MvpBasePresenter<DialogView> {
     }
 
     public void onMessageSent(MessageItem messageItem) {
-        getView().addMessage(messageItem);
+        if (isViewAttached()) {
+            getView().addMessage(messageItem);
+        } else {
+            this.sentMessage = messageItem;
+        }
+
     }
 }
