@@ -1,15 +1,18 @@
-package tinkoff.androidcourse;
+package tinkoff.androidcourse.dialoglist;
 
+import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.*;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+
+import tinkoff.androidcourse.Constants;
+import tinkoff.androidcourse.R;
 
 /**
  * Created by goto1134
@@ -17,22 +20,8 @@ import android.widget.EditText;
  */
 public class CreateDialogDialog extends android.support.v4.app.DialogFragment {
 
-    private CreateDialogListener createDialogListener;
     private EditText dialogTitle;
     private EditText dialogDescription;
-
-    public interface CreateDialogListener {
-        void onCreateDialog(String title, String description);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        FragmentActivity activity = getActivity();
-        if (activity instanceof CreateDialogListener) {
-            createDialogListener = (CreateDialogListener) activity;
-        } else throw new IllegalStateException("Activity does not implement Listener");
-    }
 
     @NonNull
     @Override
@@ -46,16 +35,26 @@ public class CreateDialogDialog extends android.support.v4.app.DialogFragment {
                       .setPositiveButton("Создать", new DialogInterface.OnClickListener() {
                           @Override
                           public void onClick(DialogInterface dialog, int which) {
-                              createDialogListener.onCreateDialog(
-                                      dialogTitle.getText()
-                                                 .toString(),
-                                      dialogDescription.getText()
-                                                       .toString());
+                              Intent intent = new Intent()
+                                      .putExtra(Constants.KEY_DIALOG_TITLE,
+                                              dialogTitle.getText()
+                                                         .toString())
+                                      .putExtra(Constants.KEY_DIALOG_DESCRIPTION,
+                                              dialogDescription.getText()
+                                                               .toString());
+                              getTargetFragment()
+                                      .onActivityResult(getTargetRequestCode(),
+                                              Activity.RESULT_OK,
+                                              intent);
                           }
                       })
                       .setNegativeButton("Отменить", new DialogInterface.OnClickListener() {
                           @Override
                           public void onClick(DialogInterface dialog, int which) {
+                              getTargetFragment()
+                                      .onActivityResult(getTargetRequestCode(),
+                                              Activity.RESULT_CANCELED,
+                                              null);
                               CreateDialogDialog.this.dismiss();
                           }
                       })

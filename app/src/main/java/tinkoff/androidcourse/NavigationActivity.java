@@ -6,8 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,13 +21,9 @@ import tinkoff.androidcourse.model.db.DialogItem;
 import static tinkoff.androidcourse.Constants.LOGIN_KEY;
 
 public class NavigationActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, DialogListFragment.DialogListListener,
-        CreateDialogDialog.CreateDialogListener, LoaderManager.LoaderCallbacks<DialogItem> {
+        implements NavigationView.OnNavigationItemSelectedListener, DialogListFragment.DialogListListener {
 
     private final static int MENU_DIALOGS = 0;
-    public static final String TITLE = "TITLE";
-    public static final String DESCRIPTION = "DESCRIPTION";
-    public static final int ADD_DIALOG_LOADER = 2;
     private ActionBarDrawerToggle toggle;
 
     @Override
@@ -69,8 +63,9 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!getIntent().hasExtra(LOGIN_KEY))
+        if (!getIntent().hasExtra(LOGIN_KEY)) {
             throw new IllegalStateException("The initial intent has not LOGIN extra");
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
@@ -106,8 +101,9 @@ public class NavigationActivity extends AppCompatActivity
 
     private void setFragment(Fragment fragment) {
         FragmentManager supportFragmentManager = getSupportFragmentManager();
-        if (supportFragmentManager.getBackStackEntryCount() > 0)
+        if (supportFragmentManager.getBackStackEntryCount() > 0) {
             supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
         supportFragmentManager.beginTransaction()
                               .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                               .replace(R.id.content_navigation, fragment)
@@ -127,40 +123,5 @@ public class NavigationActivity extends AppCompatActivity
     public void onDialogTouched(DialogItem dialogItem) {
         DialogFragment fragment = DialogFragment.newInstance(dialogItem);
         addFragmentOnBackStack(fragment);
-    }
-
-    @Override
-    public void onDialogCreateCalled() {
-        new CreateDialogDialog().show(getSupportFragmentManager(), null);
-    }
-
-    @Override
-    public void onCreateDialog(String title, String description) {
-        Bundle bundle = new Bundle();
-        bundle.putString(TITLE, title);
-        bundle.putString(DESCRIPTION, description);
-        getSupportLoaderManager().restartLoader(ADD_DIALOG_LOADER, bundle, this);
-    }
-
-    @Override
-    public Loader<DialogItem> onCreateLoader(int id, Bundle args) {
-        String title = args.getString(TITLE);
-        String description = args.getString(DESCRIPTION);
-        DialogItem dialogItem = new DialogItem(title, description);
-        return new CreateDialogLoader(this, dialogItem);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<DialogItem> loader, DialogItem dialogItem) {
-        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-            if (fragment instanceof DialogListFragment) {
-                ((DialogListFragment) fragment).addDialog(dialogItem);
-            }
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<DialogItem> loader) {
-
     }
 }

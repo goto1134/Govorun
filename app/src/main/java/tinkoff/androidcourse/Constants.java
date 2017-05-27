@@ -7,6 +7,8 @@ package tinkoff.androidcourse;
 
 public class Constants {
     public static final String LOGIN_KEY = "LOGIN";
+    public static final String KEY_DIALOG_TITLE = "DIALOG_TITLE";
+    public static final String KEY_DIALOG_DESCRIPTION = "DIALOG_DESCRIPTION";
 
     private Constants() {
 

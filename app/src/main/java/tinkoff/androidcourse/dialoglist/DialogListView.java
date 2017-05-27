@@ -15,4 +15,6 @@ interface DialogListView extends MvpView {
     void showLoadInProgress();
 
     void showDialogList(List<DialogItem> dialogItemList);
+
+    void addDialog(DialogItem dialogItem);
 }

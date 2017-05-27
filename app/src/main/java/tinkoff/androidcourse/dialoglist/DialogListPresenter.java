@@ -43,4 +43,12 @@ class DialogListPresenter extends MvpBasePresenter<DialogListView> {
         }
     }
 
+    void createDialog(String title, String description) {
+        DialogItem dialogItem = new DialogItem(title, description);
+        new CreateDialogTask(this).execute(dialogItem);
+    }
+
+    public void onDialogCreated(DialogItem dialogItem) {
+        getView().addDialog(dialogItem);
+    }
 }
