@@ -7,7 +7,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 /**
  * @author Sergey Boishtyan
  */
-public class LoginPresenter extends MvpBasePresenter<LoginView> {
+class LoginPresenter extends MvpBasePresenter<LoginView> {
 
     @VisibleForTesting
     Boolean authorizationResult;
@@ -21,7 +21,7 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
         }
     }
 
-    public void setAuthorizationResult(Boolean authorizationResult) {
+    void setAuthorizationResult(Boolean authorizationResult) {
         if (isViewAttached()) {
             onAuthorizationResult(authorizationResult);
         } else {
@@ -29,7 +29,7 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
         }
     }
 
-    public void onLoginButtonClick(String login, String password) {
+    void onLoginButtonClick(String login, String password) {
         LoginTask loginTask = new LoginTask(this);
         loginTask.execute(new String[]{login, password});
     }
