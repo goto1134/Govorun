@@ -26,14 +26,15 @@ class DialogPresenter extends MvpBasePresenter<DialogView> {
     @Override
     public void attachView(DialogView view) {
         super.attachView(view);
-        if (messageItems != null) {
-            getView().setMessageItems(messageItems);
-            messageItems = null;
-        } else if (isFirstTimeAttach) {
+        if (isFirstTimeAttach) {
             isFirstTimeAttach = false;
             refresh();
         } else if (sentMessage != null) {
             getView().addMessage(sentMessage);
+            sentMessage = null;
+        } else if (messageItems != null) {
+            getView().setMessageItems(messageItems);
+            messageItems = null;
         }
     }
 

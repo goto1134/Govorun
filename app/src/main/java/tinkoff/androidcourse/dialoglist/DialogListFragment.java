@@ -71,7 +71,8 @@ public class DialogListFragment extends MvpFragment<DialogListView, DialogListPr
             @Override
             public void onClick(View v) {
                 CreateDialogDialog createDialogDialog = new CreateDialogDialog();
-                createDialogDialog.setTargetFragment(DialogListFragment.this, CREATE_DIALOG_FRAGMENT);
+                createDialogDialog.setTargetFragment(DialogListFragment.this,
+                        CREATE_DIALOG_FRAGMENT);
                 createDialogDialog.show(getFragmentManager(), null);
             }
         });
@@ -130,6 +131,7 @@ public class DialogListFragment extends MvpFragment<DialogListView, DialogListPr
     public void showLoadInProgress() {
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
+        addDialog.setVisibility(View.GONE);
     }
 
     @Override
@@ -138,6 +140,7 @@ public class DialogListFragment extends MvpFragment<DialogListView, DialogListPr
         adapter.setItems(dialogItemList);
         progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
+        addDialog.setVisibility(View.VISIBLE);
     }
 
     public interface DialogListListener {

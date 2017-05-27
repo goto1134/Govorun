@@ -16,16 +16,20 @@ class DialogListPresenter extends MvpBasePresenter<DialogListView> {
     private List<DialogItem> dialogItems;
 
     private boolean isFirstTimeAttach = true;
+    private DialogItem newDialog;
 
     @Override
     public void attachView(DialogListView view) {
         super.attachView(view);
-        if (dialogItems != null) {
-            view.showDialogList(dialogItems);
-            dialogItems = null;
-        } else if (isFirstTimeAttach) {
+        if (isFirstTimeAttach) {
             isFirstTimeAttach = false;
             refresh();
+        } else if (newDialog != null) {
+            getView().addDialog(newDialog);
+            newDialog = null;
+        } else if (dialogItems != null) {
+            view.showDialogList(dialogItems);
+            dialogItems = null;
         }
     }
 
@@ -48,7 +52,11 @@ class DialogListPresenter extends MvpBasePresenter<DialogListView> {
         new CreateDialogTask(this).execute(dialogItem);
     }
 
-    public void onDialogCreated(DialogItem dialogItem) {
-        getView().addDialog(dialogItem);
+    void onDialogCreated(DialogItem dialogItem) {
+        if (isViewAttached()) {
+            getView().addDialog(dialogItem);
+        } else {
+            newDialog = dialogItem;
+        }
     }
 }
