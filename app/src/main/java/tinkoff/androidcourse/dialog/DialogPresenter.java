@@ -34,6 +34,11 @@ class DialogPresenter extends MvpBasePresenter<DialogView> {
         }
     }
 
+    void sendMessage(String messageText) {
+        MessageItem messageItem = new MessageItem(messageText, 0, dialogItem);
+        new SendMessageTask(this).execute(messageItem);
+    }
+
     void onMessagesLoaded(List<MessageItem> messageItems) {
         if (isViewAttached()) {
             getView().setMessageItems(messageItems);
@@ -46,5 +51,9 @@ class DialogPresenter extends MvpBasePresenter<DialogView> {
     void refresh() {
         getView().showLoadInProgress();
         new LoadMessagesTask(this).execute(dialogItem);
+    }
+
+    public void onMessageSent(MessageItem messageItem) {
+        getView().addMessage(messageItem);
     }
 }

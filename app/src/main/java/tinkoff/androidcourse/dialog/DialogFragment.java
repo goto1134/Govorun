@@ -3,8 +3,6 @@ package tinkoff.androidcourse.dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,13 +28,9 @@ import tinkoff.androidcourse.ui.widgets.MessageSender;
  */
 
 public class DialogFragment extends MvpFragment<DialogView, DialogPresenter>
-        implements MessageSender.MessageSentListener,
-        LoaderCallbacks, DialogView {
+        implements MessageSender.MessageSentListener, DialogView {
 
-    public static final int SEND_MESSATGE_LOADER_ID = 1;
-    public static final String KEY_MESSAGE_TEXT = "MESSAGE_TEXT";
     public static final String DIALOG_ITEM = "DIALOG_ITEM";
-    public static final long STUB_USER_ID = 0;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private MessagesAdapter adapter = new MessagesAdapter(new OnItemClickListener() {
@@ -98,30 +92,12 @@ public class DialogFragment extends MvpFragment<DialogView, DialogPresenter>
 
     @Override
     public void OnMessageSent(String aMessage) {
-        Bundle bundle = new Bundle();
-        bundle.putString(KEY_MESSAGE_TEXT, aMessage);
-        getLoaderManager().restartLoader(SEND_MESSATGE_LOADER_ID, bundle, this);
+        getPresenter().sendMessage(aMessage);
     }
 
     @Override
-    public Loader onCreateLoader(int id, Bundle args) {
-        DialogItem dialogItem = (DialogItem) getArguments().getSerializable(DIALOG_ITEM);
-        if (!args.containsKey(KEY_MESSAGE_TEXT)) {
-            throw new IllegalStateException("Bundle does not contain messageText");
-        }
-        return new SendMessageLoader(getContext(), args.getString(KEY_MESSAGE_TEXT), dialogItem,
-                STUB_USER_ID);
-    }
-
-
-    @Override
-    public void onLoadFinished(Loader loader, Object data) {
-        adapter.addMessage(((MessageItem) data));
-    }
-
-    @Override
-    public void onLoaderReset(Loader loader) {
-
+    public void addMessage(MessageItem messageItem) {
+        adapter.addMessage(messageItem);
     }
 
     @Override

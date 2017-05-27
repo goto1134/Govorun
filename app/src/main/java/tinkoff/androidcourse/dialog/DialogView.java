@@ -15,4 +15,7 @@ interface DialogView extends MvpView {
     void setMessageItems(List<MessageItem> messageItems);
 
     void showLoadInProgress();
+
+    void addMessage(MessageItem messageItem);
+
 }
