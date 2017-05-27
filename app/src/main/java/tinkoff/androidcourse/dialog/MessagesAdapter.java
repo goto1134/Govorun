@@ -14,6 +14,8 @@ import tinkoff.androidcourse.OnItemClickListener;
 import tinkoff.androidcourse.R;
 import tinkoff.androidcourse.model.db.MessageItem;
 
+import static android.support.v7.widget.RecyclerView.NO_POSITION;
+
 /**
  * Created by goto1134
  * on 23.03.2017.
@@ -79,8 +81,9 @@ class MessagesAdapter
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (listener != null) {
-                        listener.onItemClick(getAdapterPosition());
+                    int adapterPosition = getAdapterPosition();
+                    if (listener != null && adapterPosition != NO_POSITION) {
+                        listener.onItemClick(adapterPosition);
                     }
                 }
             });

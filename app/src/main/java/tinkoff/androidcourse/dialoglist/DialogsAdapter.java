@@ -12,6 +12,8 @@ import tinkoff.androidcourse.OnItemClickListener;
 import tinkoff.androidcourse.R;
 import tinkoff.androidcourse.model.db.DialogItem;
 
+import static android.support.v7.widget.RecyclerView.NO_POSITION;
+
 class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHolder> {
 
     private List<DialogItem> dataset;
@@ -67,8 +69,9 @@ class DialogsAdapter extends RecyclerView.Adapter<DialogsAdapter.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (listener != null) {
-                        listener.onItemClick(getAdapterPosition());
+                    int adapterPosition = getAdapterPosition();
+                    if (listener != null && adapterPosition != NO_POSITION) {
+                        listener.onItemClick(adapterPosition);
                     }
                 }
             });
