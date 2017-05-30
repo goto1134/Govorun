@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <tinkoff.androidcourse.ui.widgets.FontEditText
+    <tinkoff.androidcourse.govorun.ui.widgets.FontEditText
         android:id="@+id/ms_message_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

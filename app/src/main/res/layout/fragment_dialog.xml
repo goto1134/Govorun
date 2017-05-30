@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="tinkoff.androidcourse.dialog.DialogFragment">
+              tools:context=".dialog.DialogFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_messages"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"/>
 
-    <tinkoff.androidcourse.ui.widgets.MessageSender
+    <tinkoff.androidcourse.govorun.ui.widgets.MessageSender
         android:id="@+id/fd_message_sender"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
