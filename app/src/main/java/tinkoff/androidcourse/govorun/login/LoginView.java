@@ -1,5 +1,7 @@
 package tinkoff.androidcourse.govorun.login;
 
+import android.net.Uri;
+
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 /**
@@ -7,7 +9,11 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
  */
 interface LoginView extends MvpView {
 
-    void goToNavigationScreen();
+    void goToNavigationScreen(String displayName, Uri photoUrl);
 
     void showUnSuccessAuthorization();
+
+    void signIn();
+
+    void setLoadingState();
 }

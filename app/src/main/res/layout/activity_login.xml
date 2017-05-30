@@ -10,26 +10,14 @@
               android:paddingTop="@dimen/activity_vertical_margin"
               tools:context=".login.LoginActivity">
 
-    <EditText
-        android:id="@+id/edit_text_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/login"
-        android:maxLines="1"/>
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
-    <EditText
-        android:id="@+id/edit_text_password"
-        android:layout_width="match_parent"
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/password"
-        android:imeActionId="@+id/login"
-        android:imeOptions="actionUnspecified"
-        android:inputType="textPassword"
-        android:maxLines="1"/>
-
-    <tinkoff.androidcourse.govorun.ui.widgets.ProgressButton
-        android:id="@+id/btn_enter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"/>
+        android:visibility="gone"/>
 </LinearLayout>

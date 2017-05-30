@@ -1,6 +1,7 @@
 package tinkoff.androidcourse.govorun;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,12 +14,19 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import tinkoff.androidcourse.govorun.dialog.DialogFragment;
 import tinkoff.androidcourse.govorun.dialoglist.DialogListFragment;
 import tinkoff.androidcourse.govorun.login.LoginActivity;
 import tinkoff.androidcourse.govorun.model.db.DialogItem;
+
+import static tinkoff.androidcourse.govorun.Constants.KEY_USER_PHOTO;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DialogListFragment.DialogListListener {
@@ -66,8 +74,12 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!getIntent().hasExtra(Constants.LOGIN_KEY)) {
+        Intent intent = getIntent();
+        if (!intent.hasExtra(Constants.KEY_LOGIN)) {
             throw new IllegalStateException("The initial intent has not LOGIN extra");
+        }
+        if (!intent.hasExtra(KEY_USER_PHOTO)) {
+            throw new IllegalStateException("The initial intent has no USER_PHOTO extra");
         }
 
         super.onCreate(savedInstanceState);
@@ -83,10 +95,17 @@ public class NavigationActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        TextView loginView = (TextView) navigationView.getHeaderView(0)
-                                                      .findViewById(R.id.nav_login);
-        loginView.setText(getIntent().getStringExtra(Constants.LOGIN_KEY));
+        String login = intent.getStringExtra(Constants.KEY_LOGIN);
+        Uri photoURL = intent.getParcelableExtra(KEY_USER_PHOTO);
 
+        View headerView = navigationView.getHeaderView(0);
+        TextView loginView = (TextView) headerView.findViewById(R.id.nav_login);
+        ImageView photoView = (ImageView) headerView.findViewById(R.id.nav_photo);
+        loginView.setText(login);
+        Picasso.with(this)
+               .load(photoURL)
+               .transform(new CropCircleTransformation())
+               .into(photoView);
         if (savedInstanceState == null) {
             navigationView.getMenu()
                           .getItem(MENU_DIALOGS)

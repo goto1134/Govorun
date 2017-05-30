@@ -6,9 +6,10 @@ package tinkoff.androidcourse.govorun;
  */
 
 public class Constants {
-    public static final String LOGIN_KEY = "LOGIN";
+    public static final String KEY_LOGIN = "LOGIN";
     public static final String KEY_DIALOG_TITLE = "DIALOG_TITLE";
     public static final String KEY_DIALOG_DESCRIPTION = "DIALOG_DESCRIPTION";
+    public static final String KEY_USER_PHOTO = "USER_PHOTO";
 
     private Constants() {
 
