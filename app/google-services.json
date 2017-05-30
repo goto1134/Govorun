@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "566978173725",
+    "firebase_url": "https://govorun-67e83.firebaseio.com",
+    "project_id": "govorun-67e83",
+    "storage_bucket": "govorun-67e83.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:566978173725:android:445c55079e6096a0",
+        "android_client_info": {
+          "package_name": "tinkoff.androidcourse.govorun"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "566978173725-mrik9knd0ktlpss28ks1kjaipetrmdal.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMZoGBYqQHjoie5v5MmGhx-Ztg2-cCWhs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
